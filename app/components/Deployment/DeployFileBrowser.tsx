@@ -7,11 +7,7 @@ import {
   ChevronRight, 
   ChevronDown, 
   Download, 
-  ExternalLink,
-  ChevronLeft,
   FileCode,
-  FileJson,
-  FileImage,
   Box
 } from 'lucide-react';
 
@@ -30,15 +26,25 @@ const initialFiles: FileNode[] = [
     type: 'folder',
     isOpen: true,
     children: [
-      { name: 'assets', type: 'folder', count: 9, children: [] },
+      { 
+        name: 'assets', 
+        type: 'folder', 
+        count: 9, 
+        isOpen: true,
+        children: [
+          { name: 'home-JLQNJKBo.js', type: 'file', size: '1.7 MB' },
+          { name: 'entry.client-DtBb0jj4.js', type: 'file', size: '190 KB' },
+          { name: 'root-B_xoLYis.css', type: 'file', size: '73 KB' },
+          { name: 'chunk-UVKPFVEO.js', type: 'file', size: '125 KB' },
+          { name: 'geist-latin.woff2', type: 'file', size: '28 KB' },
+        ]
+      },
       { name: 'favicon.ico', type: 'file', size: '14.7 KB' },
       { name: 'index.html', type: 'file', size: '2.4 KB' },
-      { name: 'manifest.json', type: 'file', size: '0.8 KB' },
     ]
   },
   { name: 'netlify.toml', type: 'file', size: '0.4 KB' },
   { name: 'package.json', type: 'file', size: '1.2 KB' },
-  { name: 'README.md', type: 'file', size: '3.5 KB' },
 ];
 
 export default function DeployFileBrowser() {
