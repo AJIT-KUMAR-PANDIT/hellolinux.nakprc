@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Mic, MicOff } from 'lucide-react';
 import VoiceVisualizer from './VoiceVisualizer';
+import type { Message } from '../Chat/ChatScreen';
 
-export default function VoiceScreen() {
+type VoiceScreenProps = {
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+};
+
+export default function VoiceScreen({ setMessages }: VoiceScreenProps) {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("Tap to speak...");
 
@@ -12,7 +17,11 @@ export default function VoiceScreen() {
     if (!isListening) {
       setTranscript("Listening...");
       // Mock transcript update 
-      setTimeout(() => setTranscript("I heard: \"Generate a new UI component\""), 2500);
+      setTimeout(() => {
+        const fakeTranscript = "Generate a new component interface";
+        setTranscript(`I heard: "${fakeTranscript}"`);
+        setMessages(prev => [...prev, { id: Date.now().toString(), role: 'user', content: fakeTranscript }]);
+      }, 2500);
     } else {
       setTranscript("Tap to speak...");
     }

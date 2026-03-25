@@ -8,10 +8,12 @@ export type Message = {
   content: string;
 };
 
-export default function ChatScreen() {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'ai', content: 'Console ready. How can I help you today?' }
-  ]);
+type ChatScreenProps = {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+};
+
+export default function ChatScreen({ messages, setMessages }: ChatScreenProps) {
   const [isTyping, setIsTyping] = useState(false);
 
   const handleSendMessage = (text: string) => {
