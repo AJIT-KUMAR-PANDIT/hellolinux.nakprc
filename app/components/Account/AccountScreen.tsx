@@ -88,7 +88,7 @@ export default function AccountScreen() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#0a0f18] text-gray-100">
+    <div className="flex flex-col h-[100%] w-full bg-[#0a0f18] text-gray-100 mb-18">
       {/* Header */}
       <header className="flex-none px-6 py-5 border-b border-white/5 bg-[#10141a]/90 backdrop-blur-md">
         <div className="flex items-center gap-3">
@@ -103,7 +103,7 @@ export default function AccountScreen() {
       </header>
 
       {/* Scrollable content */}
-      <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 pb-28 flex flex-col gap-5 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-4 sm:px-6 py-6 pb-28 flex flex-col gap-5 max-w-2xl mx-auto w-full">
 
         {/* AI Provider Toggle */}
         <div className="flex flex-col gap-3">
@@ -123,20 +123,20 @@ export default function AccountScreen() {
               <span className="text-sm font-semibold text-gray-200">Auto Read AI Responses</span>
               <span className="text-xs text-gray-500">AI will automatically speak its response aloud</span>
             </div>
-            <button 
+            <button
               onClick={() => s.setAutoTTS(!s.autoTTS)}
               className={`w-12 h-6 rounded-full transition-colors relative ${s.autoTTS ? 'bg-green-500' : 'bg-gray-800'}`}
             >
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${s.autoTTS ? 'left-7' : 'left-1'}`} />
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between py-2 border-t border-white/5 pt-4">
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-semibold text-gray-200">Enable Voice Input (STT)</span>
               <span className="text-xs text-gray-500">Enable microphone button in Voice tab</span>
             </div>
-            <button 
+            <button
               onClick={() => s.setSTTEnabled(!s.sttEnabled)}
               className={`w-12 h-6 rounded-full transition-colors relative ${s.sttEnabled ? 'bg-green-500' : 'bg-gray-800'}`}
             >
@@ -210,7 +210,7 @@ export default function AccountScreen() {
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           onClick={handleSave}
-          className={`w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-semibold text-sm transition-all duration-300 ${saved ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-green-500 text-white hover:bg-green-400'}`}
+          className={`fixed bottom-21 w-full flex items-center justify-center self-center gap-2 py-4 rounded-2xl font-semibold text-sm transition-all duration-300 ${saved ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-green-500 text-white hover:bg-green-400'}`}
         >
           <Save size={18} />
           {saved ? '✅ Settings Saved!' : 'Save Settings'}
