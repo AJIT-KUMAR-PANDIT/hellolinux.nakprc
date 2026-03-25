@@ -78,11 +78,21 @@ client.on('message', async (topic, payload) => {
     if (!res.ok) throw new Error(`Local LLM HTTP ${res.status}: ${await res.text()}`);
 
     const json = await res.json();
-    let text = json.output ?? json.choices?.[0]?.message?.content ?? json.content ?? 'No response from local model.';
-
-    // If the API returned a structured object (e.g. {type: 'text', content: '...'}), extract the string
-    if (typeof text === 'object' && text !== null) {
-      text = text.content || text.text || JSON.stringify(text);
+    let text = '';
+    
+    if (Array.isArray(json)) {
+      // Handle the new Reason/Message array format
+      text = json.map(item => {
+        if (item.type === 'reasoning') return `> [THINKING]: ${item.content}`;
+        return item.content;
+      }).join('\n\n');
+    } else {
+      text = json.output ?? json.choices?.[0]?.message?.content ?? json.content ?? 'No response from local model.';
+      
+      // If the API returned a single structured object (e.g. {type: 'text', content: '...'}), extract the string
+      if (typeof text === 'object' && text !== null) {
+        text = text.content || text.text || JSON.stringify(text);
+      }
     }
 
     console.log(`[bridge] → Sending response [${id}]: "${String(text).slice(0, 80)}..."`);
