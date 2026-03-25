@@ -1,13 +1,19 @@
 import type { Route } from "./+types/home";
 import BottomNav from "~/components/Common/BottomNav";
+import ChatScreen from "~/components/Chat/ChatScreen";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Terminal / Console Interface" },
+    { name: "description", content: "Terminal AI Interface" },
   ];
 }
 
 export default function Home() {
-  return <BottomNav />;
+  return (
+    <>
+      <ChatScreen />
+      <BottomNav />
+    </>
+  );
 }
