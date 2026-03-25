@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
+import { generateAIResponse } from '~/API/ai/llm';
+import { useAISettingsStore } from '~/store/useAISettingsStore';
+import { speak } from '~/lib/voice';
 
 export type Message = {
   id: string;
@@ -16,25 +19,42 @@ type ChatScreenProps = {
 export default function ChatScreen({ messages, setMessages }: ChatScreenProps) {
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
-    
+
     // Add user message immediately
     const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text };
     setMessages(prev => [...prev, userMsg]);
     setIsTyping(true);
-    
-    // Simulate AI response delay
-    setTimeout(() => {
+
+    try {
+      // ✅ Call real Gemini AI
+      const responseText = await generateAIResponse(text);
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'ai',
-        content: `I received: "${text}". Note that this is a simulated interface right now.`
+        content: responseText,
       };
       setMessages(prev => [...prev, aiMsg]);
+
+      // Auto TTS if enabled
+      const { autoTTS } = useAISettingsStore.getState();
+      if (autoTTS) {
+        speak(responseText);
+      }
+    } catch (err) {
+      console.error('AI error:', err);
+      const errMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'ai',
+        content: `⚠️ AI Error: ${err instanceof Error ? err.message : String(err)}`,
+      };
+      setMessages(prev => [...prev, errMsg]);
+    } finally {
       setIsTyping(false);
-    }, 1200);
+    }
   };
+
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#0a0f18] text-gray-100 overflow-hidden pb-[88px]">

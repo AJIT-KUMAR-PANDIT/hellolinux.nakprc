@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Mic, MicOff } from 'lucide-react';
+import { useAISettingsStore } from '~/store/useAISettingsStore';
 import VoiceVisualizer from './VoiceVisualizer';
 import type { Message } from '../Chat/ChatScreen';
 
@@ -9,22 +10,61 @@ type VoiceScreenProps = {
 };
 
 export default function VoiceScreen({ setMessages }: VoiceScreenProps) {
+  const { sttEnabled } = useAISettingsStore();
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("Tap to speak...");
 
   const handleToggleMic = () => {
-    setIsListening((prev) => !prev);
-    if (!isListening) {
-      setTranscript("Listening...");
-      // Mock transcript update 
-      setTimeout(() => {
-        const fakeTranscript = "Generate a new component interface";
-        setTranscript(`I heard: "${fakeTranscript}"`);
-        setMessages(prev => [...prev, { id: Date.now().toString(), role: 'user', content: fakeTranscript }]);
-      }, 2500);
-    } else {
-      setTranscript("Tap to speak...");
+    if (!sttEnabled) {
+      setTranscript("Voice input is disabled in Settings.");
+      return;
     }
+    if (isListening) {
+      const recognition = (window as any)._recognition;
+      if (recognition) recognition.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setTranscript("Speech recognition not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      setIsListening(true);
+      setTranscript("Listening...");
+    };
+
+    recognition.onresult = (event: any) => {
+      let currentTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        currentTranscript += event.results[i][0].transcript;
+      }
+      setTranscript(currentTranscript);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      // If we have a transcript, add it to messages
+      if (transcript && transcript !== "Listening..." && transcript !== "Tap to speak...") {
+        setMessages(prev => [...prev, { id: Date.now().toString(), role: 'user', content: transcript }]);
+      }
+    };
+
+    (window as any)._recognition = recognition;
+    recognition.start();
   };
 
   return (
