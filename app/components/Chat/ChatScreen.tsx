@@ -3,7 +3,7 @@ import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import { generateAIResponse } from '~/API/ai/llm';
 import { useAISettingsStore } from '~/store/useAISettingsStore';
-import { speak } from '~/lib/voice';
+import { speak, getCleanTextForSpeech } from '~/lib/voice';
 
 export type Message = {
   id: string;
@@ -40,7 +40,7 @@ export default function ChatScreen({ messages, setMessages }: ChatScreenProps) {
       // Auto TTS if enabled
       const { autoTTS } = useAISettingsStore.getState();
       if (autoTTS) {
-        speak(responseText);
+        speak(getCleanTextForSpeech(responseText));
       }
     } catch (err) {
       console.error('AI error:', err);
@@ -66,26 +66,26 @@ export default function ChatScreen({ messages, setMessages }: ChatScreenProps) {
           <p className="text-xs text-gray-500 font-mono mt-1">Status: Online</p>
         </div>
         <div className="flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
+          <span className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+          </span>
         </div>
       </header>
-      
+
       <main className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-8 custom-scrollbar">
         <MessageList messages={messages} />
         {isTyping && (
           <div className="flex w-full mb-6 justify-start max-w-4xl mx-auto">
-             <div className="bg-[#1a202c] text-gray-400 border border-white/5 rounded-2xl rounded-tl-sm px-5 py-3.5 shadow-md flex items-center gap-1.5 h-[52px]">
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-             </div>
+            <div className="bg-[#1a202c] text-gray-400 border border-white/5 rounded-2xl rounded-tl-sm px-5 py-3.5 shadow-md flex items-center gap-1.5 h-[52px]">
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
           </div>
         )}
       </main>
-      
+
       <div className="flex-none px-4 sm:px-6 md:px-8 pb-4 bg-gradient-to-t from-[#0a0f18] to-transparent pt-4">
         <ChatInput onSend={handleSendMessage} />
       </div>
