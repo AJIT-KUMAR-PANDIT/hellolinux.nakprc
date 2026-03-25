@@ -1,15 +1,18 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { MessageSquare, Mic, TerminalSquare, History, User } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Mic, History } from 'lucide-react';
+import { MessageSquareIcon } from '../animate-ui/icons/message-square';
+import { TerminalIcon } from '../animate-ui/icons/terminal';
+import { UserIcon } from '../animate-ui/icons/user';
 
 const BottomNav: React.FC = () => {
     return (
         <nav className="fixed bottom-0 left-0 w-full flex justify-around py-4 bg-[#10141a]">
-            <NavItem icon={<MessageSquare size={24} />} label="Terminal" active />
+            <NavItem icon={<MessageSquareIcon size={24} />} label="Terminal" active />
             <NavItem icon={<Mic size={24} />} label="Voice" />
-            <NavItem icon={<TerminalSquare size={24} />} label="Console" />
+            <NavItem icon={<TerminalIcon size={24} />} label="Console" />
             <NavItem icon={<History size={24} />} label="Logs" />
-            <NavItem icon={<User size={24} />} label="Account" />
+            <NavItem icon={<UserIcon size={24} />} label="Account" />
         </nav>
     );
 };
