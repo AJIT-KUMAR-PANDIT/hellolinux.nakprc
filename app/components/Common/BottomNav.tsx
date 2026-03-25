@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Mic, History } from 'lucide-react';
+import { Mic, History, Box } from 'lucide-react';
 import { MessageSquareIcon } from '../animate-ui/icons/message-square';
 import { TerminalIcon } from '../animate-ui/icons/terminal';
 import { UserIcon } from '../animate-ui/icons/user';
@@ -16,6 +16,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange }) => {
             <NavItem icon={<MessageSquareIcon size={24} />} label="Terminal" active={activeTab === 'Terminal'} onClick={() => onTabChange('Terminal')} />
             <NavItem icon={<Mic size={24} />} label="Voice" active={activeTab === 'Voice'} onClick={() => onTabChange('Voice')} />
             <NavItem icon={<TerminalIcon size={24} />} label="Console" active={activeTab === 'Console'} onClick={() => onTabChange('Console')} />
+            <NavItem icon={<Box size={24} />} label="Deploy" active={activeTab === 'Deploy'} onClick={() => onTabChange('Deploy')} />
             <NavItem icon={<History size={24} />} label="Logs" active={activeTab === 'Logs'} onClick={() => onTabChange('Logs')} />
             <NavItem icon={<UserIcon size={24} />} label="Account" active={activeTab === 'Account'} onClick={() => onTabChange('Account')} />
         </nav>
