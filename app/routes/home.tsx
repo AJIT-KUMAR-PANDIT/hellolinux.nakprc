@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import BottomNav from "components/Common/BottomNav";
+import BottomNav from "~/components/Common/BottomNav";
 
 export function meta({ }: Route.MetaArgs) {
   return [

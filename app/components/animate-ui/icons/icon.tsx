@@ -12,7 +12,7 @@ import {
 } from 'motion/react';
 
 import { cn } from '~/lib/utils';
-import { useIsInView } from '../../../hooks/use-is-in-view';
+import { useIsInView } from '~/hooks/use-is-in-view';
 import { Slot, type WithAsChild } from '../primitives/animate/slot';
 
 const staticAnimations = {
@@ -73,10 +73,10 @@ type DefaultIconProps<T = string> = {
 
 type AnimateIconProps<T = string> = WithAsChild<
   HTMLMotionProps<'span'> &
-    DefaultIconProps<T> & {
-      children: React.ReactNode;
-      asChild?: boolean;
-    }
+  DefaultIconProps<T> & {
+    children: React.ReactNode;
+    asChild?: boolean;
+  }
 >;
 
 type IconProps<T> = DefaultIconProps<T> &
@@ -506,11 +506,11 @@ function IconWrapper<T extends string>({
 
       return (
         <AnimateIcon animate={finalAnimate} animateOnHover={animateOnHover} animateOnTap={animateOnTap} animateOnView={animateOnView} animateOnViewMargin={animateOnViewMargin} animateOnViewOnce={animateOnViewOnce} animation={animationProp ?? parentAnimation} loop={loop ?? parentLoop} loopDelay={loopDelay ?? parentLoopDelay} persistOnAnimateEnd={persistOnAnimateEnd ?? parentPersistOnAnimateEnd} initialOnAnimateEnd={initialOnAnimateEnd ?? parentInitialOnAnimateEnd} delay={delay ?? parentDelay} completeOnStop={completeOnStop ?? parentCompleteOnStop} asChild><IconComponent size={size} className={cn(
-                        className,
-                        ((animationProp ?? parentAnimation) === 'path' ||
-                          (animationProp ?? parentAnimation) === 'path-loop') &&
-                          pathClassName,
-                      )} {...props} /></AnimateIcon>
+          className,
+          ((animationProp ?? parentAnimation) === 'path' ||
+            (animationProp ?? parentAnimation) === 'path-loop') &&
+          pathClassName,
+        )} {...props} /></AnimateIcon>
       );
     }
 
@@ -537,7 +537,7 @@ function IconWrapper<T extends string>({
           className={cn(
             className,
             (animationToUse === 'path' || animationToUse === 'path-loop') &&
-              pathClassName,
+            pathClassName,
           )}
           {...props}
         />
@@ -554,10 +554,10 @@ function IconWrapper<T extends string>({
   ) {
     return (
       <AnimateIcon animate={animate} animateOnHover={animateOnHover} animateOnTap={animateOnTap} animateOnView={animateOnView} animateOnViewMargin={animateOnViewMargin} animateOnViewOnce={animateOnViewOnce} animation={animationProp} loop={loop} loopDelay={loopDelay} delay={delay} completeOnStop={completeOnStop} asChild><IconComponent size={size} className={cn(
-                    className,
-                    (animationProp === 'path' || animationProp === 'path-loop') &&
-                      pathClassName,
-                  )} {...props} /></AnimateIcon>
+        className,
+        (animationProp === 'path' || animationProp === 'path-loop') &&
+        pathClassName,
+      )} {...props} /></AnimateIcon>
     );
   }
 
@@ -567,7 +567,7 @@ function IconWrapper<T extends string>({
       className={cn(
         className,
         (animationProp === 'path' || animationProp === 'path-loop') &&
-          pathClassName,
+        pathClassName,
       )}
       {...props}
     />
@@ -575,7 +575,7 @@ function IconWrapper<T extends string>({
 }
 
 function getVariants<
-  V extends { default: T; [key: string]: T },
+  V extends { default: T;[key: string]: T },
   T extends Record<string, Variants>,
 >(animations: V): T {
   // eslint-disable-next-line react-hooks/rules-of-hooks
